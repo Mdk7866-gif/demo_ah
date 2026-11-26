@@ -25,6 +25,8 @@ export type OfferCta = "booking" | "drinks";
 export type Offer = {
   id: string;
   title: string;
+  /** Short label on the offer card, such as "Weekday lunch". */
+  label: string;
   description: string;
   terms: string;
   ctaLabel: string;
@@ -95,7 +97,7 @@ export const restaurant: RestaurantConfig = {
   story: [
     "The dining room sits above Reliance Trends on Bank Colony Main Road, a short way from NIT. Families come up for lunch and stay into the evening for biryani and starters.",
     "The menu follows Andhra cooking: Chicken 65 and Guntur chicken from the fryer, gongura with mutton or pappu, natukodi pulusu, and a full meals plate when you want a bit of everything.",
-    "This website is a prototype. Offers shown here are samples. A table request is not stored on the site. It opens WhatsApp so the guest can send the message themselves.",
+    "Book a table from the site. The request opens WhatsApp so you can send it to the restaurant, and the kitchen confirms in the chat.",
   ],
   highlights: [
     {
@@ -398,31 +400,34 @@ export const restaurant: RestaurantConfig = {
     {
       id: "weekday-meals",
       title: "Weekday Andhra meals",
+      label: "Weekday lunch",
       description:
-        "The veg meals plate at lunch, Monday to Friday, with majjiga on the house.",
+        "The veg meals plate at lunch, Monday to Friday, with a glass of majjiga.",
       terms:
-        "Demo offer. Sample expiry: 30 June 2027. This is not a live promotion and cannot be redeemed.",
+        "Dine-in, Monday to Friday, 12:00 to 15:30. One meals plate and one majjiga per person. Tell the server when you order.",
       ctaLabel: "Reserve a lunch table",
       cta: "booking",
     },
     {
       id: "family-platter",
       title: "Vegetarian starter platter",
+      label: "Tables of four",
       description:
-        "A shared vegetarian starter platter when a table is booked for four or more guests after 7 pm.",
+        "A shared vegetarian starter platter with a table booked for four or more, from 7 pm.",
       terms:
-        "Demo offer. Sample note: one platter per booking. This is not a live promotion.",
+        "Dine-in from 19:00. One platter for a table of four or more. Mention it when you book.",
       ctaLabel: "Book a table for four",
       cta: "booking",
     },
     {
       id: "cooler-hour",
       title: "Lime soda with a main",
+      label: "3:30 to 6 pm",
       description:
-        "A fresh lime soda with any main course between 3:30 pm and 6:00 pm.",
+        "A fresh lime soda, sweet, salted, or plain, with any main course between 3:30 pm and 6:00 pm.",
       terms:
-        "Demo offer. Sample hours only. This card is for presentation and is not a live promotion.",
-      ctaLabel: "Browse drinks",
+        "Dine-in, 15:30 to 18:00. One lime soda with one main course. Ask for it with the order.",
+      ctaLabel: "See the drinks",
       cta: "drinks",
     },
   ],

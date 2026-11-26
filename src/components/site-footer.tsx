@@ -85,9 +85,8 @@ export function SiteFooter() {
             ))}
           </ul>
           <p className="mt-6 text-sm leading-6 text-ivory/70">
-            Demonstration website. Sample offers are not live promotions.
-            A table request opens WhatsApp so the guest can send it. This
-            site does not store the message.
+            Open daily, 12:00 to 22:30. Book a table on WhatsApp. There is no
+            payment on this site.
           </p>
         </div>
       </div>
