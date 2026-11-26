@@ -142,7 +142,7 @@ export const restaurant: RestaurantConfig = {
     "I agree to receive up to {count} promotional WhatsApp messages per month from {name}. I can opt out anytime.",
   marketingMessagesPerMonth: 2,
   welcomeNote:
-    "Leave your name and mobile number so Kritunga Restaurant can tell you when an offer is on.",
+    "Leave your name and mobile number so Kritunga Restaurant can let you know when an offer is on.",
   welcomeDemoNote:
     "This is a prototype. The name and number stayed in this browser tab only. They were not sent to the restaurant and were not saved. An offer message is not sent unless you opt in, and that choice is not stored either.",
   bookingTimeSlots: [
