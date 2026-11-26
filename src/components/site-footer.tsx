@@ -75,9 +75,11 @@ export function SiteFooter() {
                   className="underline decoration-white/40 underline-offset-4 hover:decoration-white"
                 >
                   {link.label}
-                  <span className="ml-2 rounded-full bg-white/10 px-2 py-0.5 text-xs tracking-normal text-ivory/80">
-                    Demo link
-                  </span>
+                  {link.href.includes("example.com") ? (
+                    <span className="ml-2 rounded-full bg-white/10 px-2 py-0.5 text-xs tracking-normal text-ivory/80">
+                      Demo link
+                    </span>
+                  ) : null}
                 </a>
               </li>
             ))}

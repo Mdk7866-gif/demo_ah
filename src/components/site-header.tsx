@@ -27,7 +27,7 @@ export function SiteHeader() {
           >
             K
           </span>
-          <span className="font-display text-xl tracking-tight text-ink">
+          <span className="font-display text-lg leading-tight tracking-tight text-ink sm:text-xl">
             {restaurant.name}
           </span>
         </Link>

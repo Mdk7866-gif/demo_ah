@@ -133,10 +133,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [fields, setFields] = useState<Fields>(emptyFields);
   const [errors, setErrors] = useState<Partial<Record<FieldName, string>>>({});
-  const [confirmation, setConfirmation] = useState<"whatsapp" | "demo" | null>(
-    null,
-  );
-  const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null);
+  const [confirmation, setConfirmation] = useState<"demo" | null>(null);
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
   const returnFocus = useRef<HTMLElement | null>(null);
@@ -152,7 +149,6 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     returnFocus.current = document.activeElement as HTMLElement | null;
     setConfirmation(null);
     setErrors({});
-    setWhatsappUrl(null);
     setOpen(true);
   }, []);
 
@@ -225,8 +221,6 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     if (whatsappReady) {
       const url = whatsappChatUrl(bookingMessage(fields));
       if (url) {
-        setWhatsappUrl(url);
-        setConfirmation("whatsapp");
         window.location.assign(url);
         return;
       }
@@ -287,32 +281,17 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                 : "No WhatsApp number is configured, so this demo will not contact the restaurant."}
             </p>
 
-            {confirmation ? (
+            {confirmation === "demo" ? (
               <div className="mt-5 rounded-2xl border border-line bg-ivory p-4" role="status">
-                <h3 className="font-display text-2xl">
-                  {confirmation === "whatsapp"
-                    ? "WhatsApp should open now"
-                    : "Demo confirmation"}
-                </h3>
+                <h3 className="font-display text-2xl">Demo confirmation</h3>
                 <p className="mt-2 text-sm leading-6 text-muted">
-                  {confirmation === "whatsapp"
-                    ? "Your table request was placed in a WhatsApp message. This website did not store it. If WhatsApp did not open, use the link below."
-                    : "This is a demo confirmation only. No booking reached the restaurant, and nothing you typed was saved."}
+                  This is a demo confirmation only. No booking reached the
+                  restaurant, and nothing you typed was saved.
                 </p>
-                {whatsappUrl ? (
-                  <a
-                    href={whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex min-h-11 items-center rounded-full bg-ink px-4 text-sm font-semibold text-ivory"
-                  >
-                    Open WhatsApp
-                  </a>
-                ) : null}
                 <button
                   type="button"
                   onClick={close}
-                  className="mt-4 ml-0 inline-flex min-h-11 items-center rounded-full border border-line px-4 text-sm font-semibold sm:ml-3"
+                  className="mt-4 inline-flex min-h-11 items-center rounded-full border border-line px-4 text-sm font-semibold"
                 >
                   Back to the site
                 </button>

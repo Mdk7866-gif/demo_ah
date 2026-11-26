@@ -69,7 +69,7 @@ export default function AboutPage() {
       <section className="mt-14 rounded-3xl bg-espresso px-5 py-8 text-ivory sm:px-8">
         <h2 className="font-display text-4xl">Visit</h2>
         <p className="mt-3 max-w-xl text-sm leading-6 text-ivory/80">
-          {restaurant.address.full}. The kitchen is closed on Monday. Phone{" "}
+          {restaurant.address.full}. Open daily from 12:00 to 22:30. Phone{" "}
           <a className="underline underline-offset-4" href={`tel:${restaurant.phoneTel}`}>
             {restaurant.phoneDisplay}
           </a>

@@ -58,7 +58,7 @@ function MenuFilters({ categoryParam }: { categoryParam: string }) {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Try undhiyu or lassi"
+            placeholder="Try biryani or gongura"
             className="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2.5"
           />
         </div>
@@ -108,33 +108,33 @@ function MenuFilters({ categoryParam }: { categoryParam: string }) {
           </button>
         </div>
       ) : (
-        <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-4 grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-3">
           {dishes.map((item) => (
             <li key={item.id}>
-              <article className="flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-paper">
-                <div className="relative aspect-[4/3]">
+              <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-paper sm:rounded-3xl">
+                <div className="relative aspect-square sm:aspect-[4/3]">
                   <Image
                     src={item.image}
                     alt={item.imageAlt}
                     fill
-                    sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
+                    sizes="(min-width: 1024px) 30vw, 50vw"
                     className="object-cover"
                   />
                 </div>
-                <div className="flex flex-1 flex-col p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <h2 className="font-display text-2xl leading-tight">
+                <div className="flex flex-1 flex-col p-2 sm:p-4">
+                  <div className="flex items-start justify-between gap-1.5">
+                    <h2 className="font-display text-sm leading-tight sm:text-2xl">
                       {item.name}
                     </h2>
-                    <p className="shrink-0 text-sm font-semibold">
+                    <p className="shrink-0 text-xs font-semibold sm:text-sm">
                       {formatInr(item.price)}
                     </p>
                   </div>
                   {item.diet ? <DietBadge diet={item.diet} /> : null}
-                  <p className="mt-2 text-sm leading-6 text-muted">
+                  <p className="mt-1 line-clamp-2 text-xs leading-4 text-muted sm:mt-2 sm:text-sm sm:leading-6">
                     {item.description}
                   </p>
-                  <p className="mt-auto pt-3 text-xs tracking-wide text-muted uppercase">
+                  <p className="mt-auto pt-2 text-[10px] tracking-wide text-muted uppercase sm:pt-3 sm:text-xs">
                     {item.category}
                   </p>
                 </div>
@@ -150,16 +150,19 @@ function MenuFilters({ categoryParam }: { categoryParam: string }) {
 function DietBadge({ diet }: { diet: "veg" | "non-veg" }) {
   const vegetarian = diet === "veg";
   return (
-    <p className="mt-2 inline-flex items-center gap-2 text-xs font-semibold tracking-wide uppercase">
+    <p className="mt-1 inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-wide uppercase sm:mt-2 sm:gap-2 sm:text-xs">
       <span
         aria-hidden
         className={cx(
-          "inline-block size-2.5 rounded-full",
+          "inline-block size-2 rounded-full sm:size-2.5",
           vegetarian ? "bg-leaf" : "bg-clay",
         )}
       />
       <span className={vegetarian ? "text-leaf" : "text-clay"}>
-        {vegetarian ? "Vegetarian" : "Non-vegetarian"}
+        <span className="sm:hidden">{vegetarian ? "Veg" : "Non-veg"}</span>
+        <span className="hidden sm:inline">
+          {vegetarian ? "Vegetarian" : "Non-vegetarian"}
+        </span>
       </span>
     </p>
   );
