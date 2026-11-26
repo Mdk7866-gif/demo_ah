@@ -1,7 +1,17 @@
 "use client";
 
-import { useEffect, useId, useState, type FormEvent, type ReactNode } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type FormEvent,
+  type ReactNode,
+} from "react";
+import { createPortal } from "react-dom";
 import { restaurant } from "@/config/restaurant";
+import { usePinToVisualViewport } from "@/lib/use-visual-viewport";
 
 type Status = "asking" | "skipped" | "submitted";
 
@@ -10,24 +20,37 @@ export function WelcomePrompt() {
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
   const [error, setError] = useState("");
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
   const titleId = useId();
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const sheetOpen = mounted && status !== "skipped";
+  usePinToVisualViewport(overlayRef, sheetOpen);
 
   useEffect(() => {
-    if (status !== "asking") {
+    if (!mounted || status === "skipped") {
       return;
     }
-    const mobileScreen = window.matchMedia("(max-width: 767px)").matches;
-    if (!mobileScreen) {
+    const mobileScreen = window.matchMedia("(max-width: 767px)");
+    if (!mobileScreen.matches) {
       return;
     }
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setStatus("skipped");
       }
     }
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [status]);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [mounted, status]);
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -77,9 +100,13 @@ export function WelcomePrompt() {
     />
   );
 
-  return (
-    <>
-      <div className="fixed inset-0 z-50 flex w-full min-w-0 items-end overflow-x-hidden md:hidden">
+  const mobileSheet =
+    mounted &&
+    createPortal(
+      <div
+        ref={overlayRef}
+        className="fixed inset-0 z-[80] flex flex-col justify-end md:hidden"
+      >
         <button
           type="button"
           aria-label="Skip and view menu"
@@ -90,7 +117,7 @@ export function WelcomePrompt() {
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
-          className="relative box-border max-h-[85vh] w-full min-w-0 max-w-full overflow-x-hidden overflow-y-auto rounded-t-3xl bg-paper px-5 pt-3 pb-8 shadow-2xl"
+          className="sheet-rise relative z-10 max-h-full min-h-0 w-full min-w-0 overflow-x-hidden overflow-y-auto overscroll-contain rounded-t-3xl bg-paper px-5 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl"
         >
           <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-line" aria-hidden />
           {status === "submitted" ? (
@@ -107,7 +134,13 @@ export function WelcomePrompt() {
             </>
           )}
         </div>
-      </div>
+      </div>,
+      document.body,
+    );
+
+  return (
+    <>
+      {mobileSheet}
 
       <section className="hidden rounded-2xl border border-line bg-paper p-5 md:block">
         {status === "submitted" ? (

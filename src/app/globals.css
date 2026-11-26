@@ -48,8 +48,25 @@ body {
   outline-offset: 3px;
 }
 
+@keyframes rise-sheet {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.sheet-rise {
+  animation: rise-sheet 280ms ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .sheet-rise {
+    animation: none;
   }
 }

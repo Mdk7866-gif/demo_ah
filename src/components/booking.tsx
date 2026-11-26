@@ -11,8 +11,10 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
+import { createPortal } from "react-dom";
 import { restaurant, whatsappChatUrl } from "@/config/restaurant";
 import { cx } from "@/lib/cx";
+import { usePinToVisualViewport } from "@/lib/use-visual-viewport";
 
 type BookingContextValue = {
   openBooking: () => void;
@@ -135,9 +137,11 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const [errors, setErrors] = useState<Partial<Record<FieldName, string>>>({});
   const [confirmation, setConfirmation] = useState<"demo" | null>(null);
   const titleId = useId();
+  const overlayRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const returnFocus = useRef<HTMLElement | null>(null);
   const whatsappReady = whatsappChatUrl("table") !== null;
+  usePinToVisualViewport(overlayRef, open);
 
   const close = useCallback(() => {
     setOpen(false);
@@ -159,7 +163,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    dialogRef.current?.focus();
+    dialogRef.current?.focus({ preventScroll: true });
 
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -241,8 +245,12 @@ export function BookingProvider({ children }: { children: ReactNode }) {
         Book a Table
       </button>
 
-      {open ? (
-        <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
+      {open
+        ? createPortal(
+            <div
+              ref={overlayRef}
+              className="fixed inset-0 z-[70] flex flex-col justify-end sm:items-center sm:justify-center"
+            >
           <button
             type="button"
             aria-label="Close booking form"
@@ -255,7 +263,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
             aria-modal="true"
             aria-labelledby={titleId}
             tabIndex={-1}
-            className="relative max-h-[min(92vh,760px)] w-full overflow-y-auto rounded-t-3xl bg-paper p-5 shadow-2xl outline-none sm:max-w-lg sm:rounded-3xl sm:p-6"
+            className="sheet-rise relative z-10 max-h-full min-h-0 w-full overflow-y-auto overscroll-contain rounded-t-3xl bg-paper px-5 pt-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl outline-none sm:max-h-[min(100%,760px)] sm:max-w-lg sm:rounded-3xl sm:px-6 sm:pt-6"
           >
             <div className="flex items-start justify-between gap-4">
               <div>
@@ -407,17 +415,21 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                     className={fieldClass}
                   />
                 </div>
-                <button
-                  type="submit"
-                  className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-saffron px-5 text-sm font-semibold text-white hover:bg-saffron-dark"
-                >
-                  {whatsappReady ? "Send on WhatsApp" : "Show demo confirmation"}
-                </button>
+                <div className="sticky bottom-0 -mx-5 bg-paper px-5 pt-3 sm:-mx-6 sm:px-6">
+                  <button
+                    type="submit"
+                    className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-saffron px-5 text-sm font-semibold text-white hover:bg-saffron-dark"
+                  >
+                    {whatsappReady ? "Send on WhatsApp" : "Show demo confirmation"}
+                  </button>
+                </div>
               </form>
             )}
           </div>
-        </div>
-      ) : null}
+            </div>,
+            document.body,
+          )
+        : null}
     </BookingContext.Provider>
   );
 }
