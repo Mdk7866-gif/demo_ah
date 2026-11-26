@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+:root {
+  --ivory: #f4efe6;
+  --paper: #fffaf4;
+  --ink: #241910;
+  --muted: #6d5e52;
+  --line: #e4d8c8;
+  --saffron: #c2571a;
+  --saffron-dark: #9a3f10;
+  --leaf: #1d6b43;
+  --clay: #8d3b24;
+  --espresso: #241910;
+}
+
+@theme inline {
+  --font-sans: var(--font-outfit);
+  --font-display: var(--font-fraunces);
+  --color-ivory: var(--ivory);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-saffron: var(--saffron);
+  --color-saffron-dark: var(--saffron-dark);
+  --color-leaf: var(--leaf);
+  --color-clay: var(--clay);
+  --color-espresso: var(--espresso);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: var(--font-outfit), "Segoe UI", sans-serif;
+}
+
+::selection {
+  background: #f0c9ad;
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--saffron);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

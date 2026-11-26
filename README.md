@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Noor & Co. demo website
 
-## Getting Started
+A frontend-only restaurant demo built with Next.js App Router, TypeScript, and Tailwind CSS. There is no database, authentication, or payment gateway. Names and mobile numbers typed into the site stay in memory for the current visit and are not saved.
 
-First, run the development server:
+Table QR codes should open `/menu`. Visiting `/` redirects to `/menu`.
+
+## Setup
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). The home page redirects to the menu.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Other checks:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run build
+```
 
-## Learn More
+## Routes
 
-To learn more about Next.js, take a look at the following resources:
+| Path | Page |
+| --- | --- |
+| `/` | Redirects to `/menu` |
+| `/menu` | Digital menu and optional welcome prompt |
+| `/offer` | Sample offers, each marked as a demo |
+| `/about` | Brand story, photos, and what makes the dining room special |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Replace the demo details
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Edit `src/config/restaurant.ts`.
 
-## Deploy on Vercel
+- Restaurant name, tagline, description, story, and highlights
+- Ahmedabad address, phone display text, and `phoneTel`
+- Opening hours, including closed days (`sessions: []`)
+- Social links (they are labelled “Demo link” in the footer)
+- `whatsappNumber`: leave it empty to show a demo booking confirmation. Set an international number with digits only, such as `9198XXXXXXXX`, to open WhatsApp with a pre-filled table request
+- `marketingMessagesPerMonth` and `marketingConsentTemplate` (`{count}` and `{name}` are filled in on the menu page)
+- `welcomeNote` and `welcomeDemoNote`
+- `bookingTimeSlots` and `maxGuests`
+- Menu dishes and offers
+- Photo paths. Image files live in `public/images/`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Point each printed QR code at `https://your-domain/menu`.
